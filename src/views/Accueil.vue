@@ -1,67 +1,76 @@
 <template>
-  <header>
   <div class="accueil">
-
     <h1>Recherche de films PWA</h1>
-    <h2>Rechercher et critiquer des films</h2>
-
+    <h2>Rechercher des films populaires</h2>
+    <div class="card">
+      <div v-for="unFilm in films.results" v-bind:key="unFilm.key">
+        <p v-if="unFilm.poster_path">
+          <img v-bind:src="'http://image.tmdb.org/t/p/w500' + unFilm.poster_path">
+        </p>
+        <button v-on:click="voirDetails(unFilm)" class="button is-dark">Détails</button>
+        <p>{{unFilm.title}}</p>
+        <p>{{unFilm.vote_average}}</p>
+        <hr>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
   </div>
-
-  </header>
-
 </template>
 
-
-<style lang ="scss">
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Fira Sans', sans-serif;
-
-  &::selection {
-    background: transparentize(#42B883, 0.5);
-  }
-}
-body {
-  background-color: #35495E;
-  background-position: center;
+<style>
+.input-group {
+  margin-top: 1rem;
 }
 
-a {
-  text-decoration: none;
+.input-group-field {
+  margin-right: 0;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 16px;
-  background-color: #2C3D4E;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
-
-  h1 {
-    color: #FFF;
-    font-size: 28px;
-  }
-
-  h2 {
-    color: #FFF;
-    font-size: 19px;
-  }
-
-  span {
-    color: #42B883;
-  }
-  .sub {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
+.input-group .input-group-button {
+  margin-left: 0;
+  border: none;
 }
 
-
-
-
+.input-group .md-raised {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
 </style>
+
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'Accueil',
+  data(){
+    return{
+      films : [],
+
+      api_key: '3f2e73f99471592447bae321c22cd045'
+    }
+  },
+
+  created(){
+    this.recherche();
+  },
+
+  methods: {
+    async recherche(){
+      const response = await axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + this.api_key + "&language=fr");
+      this.films = await response.data;
+    },
+    voirDetails(film) {
+      this.$router.push({
+        path: 'details', query: {
+          id: film.id,
+          titre: film.title
+        }
+      });
+    }
+  }
+}
+</script>
