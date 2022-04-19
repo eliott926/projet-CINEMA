@@ -22,20 +22,12 @@
 
       <br>
 
-      <div class="card">
-        <div v-for="unFilm in cast.cast" v-bind:key="unFilm.key" v-on:click="voirDetailsActeurs(unFilm.id)">
-          <p v-if="unFilm.profile_path">
-            <img v-bind:src="'http://image.tmdb.org/t/p/w500' + unFilm.profile_path">
-          </p>
-          <p>{{unFilm.name}}</p>
-          <p>{{unFilm.character}}</p>
 
-        </div>
       </div>
 
 
     </div>
-  </div>
+  <
 </template>
 
 <script>
@@ -76,7 +68,7 @@ export default {
       // https://api.themoviedb.org/3/movie/335983/credits?api_key=3f2e73f99471592447bae321c22cd045&language=fr
       this.cast = await response.data;
     },
-   
+
   }
 }
 </script>
